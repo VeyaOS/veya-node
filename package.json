@@ -1,0 +1,44 @@
+{
+  "name": "veya-node",
+  "version": "1.0.0",
+  "description": "Official Veya API SDK for Node.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prebuild": "node -e \"const fs = require('fs'); if (fs.existsSync('dist')) fs.rmSync('dist', { recursive: true, force: true });\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "veya",
+    "payments",
+    "crypto",
+    "invoices",
+    "api",
+    "btcpay"
+  ],
+  "author": "Veya",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VeyaOS/veya-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VeyaOS/veya-node/issues"
+  },
+  "homepage": "https://github.com/VeyaOS/veya-node#readme"
+}
