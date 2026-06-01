@@ -66,8 +66,11 @@ export type WebhookEventType =
 // ─────────────────────────────────────────────────────────────
 
 export interface Invoice {
-  /** Unique invoice identifier. Format: inv_xxxx */
+  /** Internal unique database identifier. Format: cuid */
   id: string;
+
+  /** Human-readable invoice number. Format: INV-XXXX */
+  invoiceNum: string;
 
   /** Invoice amount in the specified currency */
   amount: number;
@@ -79,25 +82,21 @@ export interface Invoice {
   status: InvoiceStatus;
 
   /** Human-readable description of the invoice */
-  description?: string;
+  reference?: string;
 
-  /** ID of the associated customer, if any */
-  customerId?: string;
-
-  /** Customer email address */
-  customerEmail?: string;
-
-  /** Customer full name */
-  customerName?: string;
+  /** Associated customer object */
+  customer?: { id: string };
 
   /**
    * URL to redirect your customer to complete payment.
-   * Present on PENDING invoices only.
+   * Hosted by Veya.
    */
-  paymentUrl?: string;
+  checkoutUrl?: string;
 
-  /** Whether this invoice was created in test mode */
-  testMode: boolean;
+  /**
+   * Raw Bitcoin deposit address. Only included for BTC invoices.
+   */
+  depositAddress?: string;
 
   /** Environment in which this invoice was created */
   environment: Environment;
@@ -105,22 +104,22 @@ export interface Invoice {
   /** ISO 8601 creation timestamp */
   createdAt: string;
 
-  /** ISO 8601 timestamp of when payment was confirmed. Present on PAID invoices only. */
-  paidAt?: string;
-
   /** ISO 8601 due date. After this date the invoice expires. */
-  dueDate?: string;
+  expiresAt: string;
 }
 
 export interface Customer {
-  /** Unique customer identifier. Format: cus_xxxx */
+  /** Unique customer identifier. */
   id: string;
+  
+  /** Merchant ID */
+  merchantId: string;
 
   /** Customer full name */
   name: string;
 
   /** Customer email address */
-  email: string;
+  email?: string;
 
   /** Customer phone number */
   phone?: string;
@@ -129,7 +128,7 @@ export interface Customer {
   invoiceCount: number;
 
   /** Total payment volume from this customer */
-  totalVolume: number;
+  totalPaid: number;
 
   /** ISO 8601 creation timestamp */
   createdAt: string;
@@ -190,12 +189,6 @@ export interface CreateInvoiceRequest {
    * @example '2025-12-31T23:59:59Z'
    */
   dueDate?: string;
-
-  /**
-   * Optional staff member ID (cashier/manager) to link this invoice to.
-   * If omitted, the invoice defaults to being linked to the merchant owner.
-   */
-  creatorId?: string;
 }
 
 export interface CreateCustomerRequest {

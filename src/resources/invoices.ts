@@ -38,7 +38,7 @@ export class InvoicesResource {
    * );
    *
    * // Redirect customer to complete payment
-   * res.redirect(invoice.paymentUrl);
+   * res.redirect(invoice.checkoutUrl);
    */
   async create(
     data:             CreateInvoiceRequest,
